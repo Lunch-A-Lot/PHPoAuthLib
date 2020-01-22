@@ -311,17 +311,16 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
                 '',
                 array('Content-Type' => 'foo/bar'),
                 'get'
-            );            
-        }
-        catch (TokenResponseException $e) {
+            );
+
+            $response = json_decode($response, true);
+
+            $this->assertSame('foo/bar', $response['headers']['Content-Type']);
+        } catch (TokenResponseException $e) {
             if (strpos($e->getMessage(), 'cURL Error # 35') !== false) {
                 $this->markTestSkipped('SSL peer handshake failed: ' . $e->getMessage());
             }
         }
-
-        $response = json_decode($response, true);
-
-        $this->assertSame('foo/bar', $response['headers']['Content-Type']);
     }
 
     /**
